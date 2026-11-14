@@ -1,0 +1,16 @@
+const assert = require('node:assert/strict');
+global.window = {};
+require('../content.js');
+const worlds = window.ESTONA_CONTENT.worlds;
+const lessons = worlds.flatMap(world => world.lessons || []);
+const examples = lessons.flatMap(lesson => lesson.examples || []).filter(x => x.status === 'validat');
+const unique = new Map(examples.map(x => [x.time, x]));
+assert.equal(unique.size, 48, 'El banc ha de contenir 48 hores úniques validades');
+assert.equal(unique.get('01:00').expression, 'la una');
+assert.equal(unique.get('01:15').expression, 'un quart de dues');
+assert.equal(unique.get('12:15').expression, "un quart d'una");
+assert.equal(unique.get('08:30').expression, 'dos quarts de nou');
+assert.equal(unique.get('11:45').expression, 'tres quarts de dotze');
+assert.equal(worlds.length, 8, 'ESTONA ha de mantenir els vuit mons');
+assert.equal(lessons.filter(x => x.status === 'validat').length, 7, 'Hi ha d’haver set lliçons inicials validades');
+console.log('ESTONA: banc lingüístic correcte — 48 hores úniques, vuit mons i set lliçons validades.');
