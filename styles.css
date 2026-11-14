@@ -151,6 +151,6 @@ body.reduce-motion *,body.reduce-motion *:before,body.reduce-motion *:after { an
   :root:not([data-theme="light"]) .continue-card,:root:not([data-theme="light"]) .profile-summary { background:#294d63; }
   :root:not([data-theme="light"]) .round-arrow { background:#e5e0d4; color:#294d63; }
 }
-:root[data-theme="dark] { color-scheme:dark; --bg:#172a36; --paper:#203744; --paper-blue:#294655; --ink:#edf2f1; --muted:#b0bec2; --blue:#a9c8d8; --blue-light:#648da2; --line:#38505b; --accent:#d3a77b; --nav-bg:rgba(27,45,56,.94); }
+:root[data-theme="dark"] { color-scheme:dark; --bg:#172a36; --paper:#203744; --paper-blue:#294655; --ink:#edf2f1; --muted:#b0bec2; --blue:#a9c8d8; --blue-light:#648da2; --line:#38505b; --accent:#d3a77b; --nav-bg:rgba(27,45,56,.94); }
 :root[data-theme="dark"] .continue-card,:root[data-theme="dark"] .profile-summary { background:#294d63; }
 :root[data-theme="dark"] .round-arrow { background:#e5e0d4; color:#294d63; }
