@@ -187,13 +187,18 @@
       stage.appendChild(prompt);
       const choices=el('div','answer-options'); optionList(item,items,choices,answer,false); stage.appendChild(choices);
     } else if(mode==='situacions'){
-      const scenarios={
-        '08:15':'La reunió comença a les 08:15. Com ho diries a una companya?',
-        '08:30':'Has quedat a les 08:30. Quina hora diràs?',
-        '08:45':'El tren surt a les 08:45. Com ho expressaries?',
-        '09:00':'La botiga obre a les 09:00. Com ho diries?'
-      };
-      prompt.textContent=scenarios[item.time] || 'Com diries aquesta hora?';
+      const scenarios=[
+        time=>'La reunió de l’equip comença a les '+time+'. Com ho diries a una companya?',
+        time=>'El tren cap a Barcelona surt a les '+time+'. Com anunciaries l’hora de sortida?',
+        time=>'Has quedat amb una amistat a les '+time+'. Quina hora li diràs?',
+        time=>'La classe de català comença a les '+time+'. Com ho explicaries?',
+        time=>'Tens visita al metge a les '+time+'. Com confirmaries l’hora?',
+        time=>'La botiga tanca a les '+time+'. Com avisaries algú?',
+        time=>'La pel·lícula comença a les '+time+'. Com proposaries d’arribar-hi?',
+        time=>'El teu torn de feina comença a les '+time+'. Com ho comunicaries?'
+      ];
+      const scenarioIndex=(session.index+Math.floor(Math.random()*scenarios.length))%scenarios.length;
+      prompt.textContent=scenarios[scenarioIndex](item.time)+' Expressa-la amb el sistema de campanar.';
       stage.appendChild(prompt);
       const choices=el('div','answer-options'); optionList(item,items,choices,answer,true); stage.appendChild(choices);
     } else {
