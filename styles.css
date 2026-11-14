@@ -199,3 +199,13 @@ body.reduce-motion *,body.reduce-motion *:before,body.reduce-motion *:after { an
 .match-correct .match-option{border-color:#26845b;background:rgba(38,132,91,.09)}
 .match-incorrect .match-option{border-color:#bd5555;background:rgba(189,85,85,.08)}
 @media(max-width:520px){.matching-grid{gap:8px}.match-row{gap:3px}.match-option{padding:8px 5px;font-size:.88rem}.match-move{min-width:29px}}
+
+/* Perfil personal: nom i avatar local */
+.profile-avatar{width:54px;height:54px;flex:none;border-radius:50%;display:grid;place-items:center;overflow:hidden;background-color:var(--paper-blue);background-size:cover;background-position:center;color:var(--blue);font-family:Georgia,serif;font-size:26px;font-weight:600;border:1px solid rgba(255,255,255,.45)}
+.quick-avatar{width:39px;height:39px;font-size:18px;padding:0;border:1px solid var(--line)}
+.profile-avatar.has-photo{color:transparent}
+.profile-identity{min-width:0;flex:1}
+.profile-identity strong{overflow-wrap:anywhere}
+.profile-name-input{width:100%;border:1px solid var(--line);border-radius:11px;background:var(--bg);color:var(--ink);padding:13px;font:inherit;font-size:16px;margin:7px 0 10px}
+.profile-photo-actions{display:grid;gap:12px;align-items:center}
+.profile-photo-actions .secondary-button{margin:0}
