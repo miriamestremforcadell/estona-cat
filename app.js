@@ -14,7 +14,7 @@ const modes=[
 ];
 
 function defaultState(){
-  return {version:1,xp:0,completedLessons:[],worldsUnlocked:1,streak:0,lastPracticeDate:null,practiceBest:{},
+  return {version:1,xp:0,completedLessons:[],worldsUnlocked:1,streak:0,lastPracticeDate:null,practiceBest:{},profile:{name:'',photo:''},
     settings:{theme:'system',textSize:'normal',reduceMotion:false,sounds:false},lastWorld:0};
 }
 function openDB(){
@@ -105,12 +105,29 @@ function openLesson(i,lessonIndex=0){
     'Teoria introductòria disponible; les lliçons i els exercicis encara estan en preparació.';
   showView('lliço');
 }
+function renderProfile(){
+  state.profile={name:'',photo:'',...(state.profile||{})};
+  const name=state.profile.name.trim();
+  document.getElementById('profile-name').textContent=name||"Aprenent d'ESTONA";
+  document.getElementById('profile-name-input').value=state.profile.name;
+  document.getElementById('home-greeting').textContent=name?'Bon dia, '+name+'!':'Bon dia!';
+  const initial=(name||'E').trim().charAt(0).toLocaleUpperCase('ca');
+  ['profile-avatar','quick-profile'].forEach(id=>{
+    const node=document.getElementById(id);if(!node)return;
+    node.textContent='';node.style.backgroundImage=state.profile.photo?'url("'+state.profile.photo+'")':'';
+    node.classList.toggle('has-photo',!!state.profile.photo);
+    if(!state.profile.photo)node.textContent=initial;
+    node.setAttribute('aria-label',name?'Perfil de '+name:'Obre el perfil');
+  });
+  document.getElementById('remove-profile-photo').hidden=!state.profile.photo;
+}
 function renderStats(){
   document.getElementById('home-xp').textContent=state.xp;
   document.getElementById('home-lessons').textContent=state.completedLessons.length;
   document.getElementById('home-streak').textContent=state.streak;
   document.getElementById('profile-xp').textContent=state.xp+' XP';
   document.getElementById('profile-level').textContent=state.xp>=500?'Nivell 2 · Bon camí':'Nivell 1 · Primeres passes';
+  renderProfile();
 }
 function applySettings(){
   const s=state.settings;
@@ -152,6 +169,26 @@ function localDate(date=new Date()){
   const y=date.getFullYear(),m=String(date.getMonth()+1).padStart(2,'0'),d=String(date.getDate()).padStart(2,'0');
   return y+'-'+m+'-'+d;
 }
+async function saveProfileName(){
+  state.profile=state.profile||{name:'',photo:''};
+  state.profile.name=document.getElementById('profile-name-input').value.trim().slice(0,40);
+  await saveState();renderProfile();toast('Nom del perfil desat.');
+}
+async function saveProfilePhoto(file){
+  if(!file)return;
+  if(!file.type.startsWith('image/')){toast('Tria una imatge vàlida.');return;}
+  try{
+    const source=await createImageBitmap(file),scale=Math.min(1,512/Math.max(source.width,source.height));
+    const canvas=document.createElement('canvas');canvas.width=Math.max(1,Math.round(source.width*scale));canvas.height=Math.max(1,Math.round(source.height*scale));
+    canvas.getContext('2d').drawImage(source,0,0,canvas.width,canvas.height);source.close?.();
+    state.profile=state.profile||{name:'',photo:''};state.profile.photo=canvas.toDataURL('image/jpeg',.82);
+    await saveState();renderProfile();toast('Fotografia de perfil desada en aquest dispositiu.');
+  }catch(e){toast('No s’ha pogut carregar aquesta fotografia.');}
+}
+async function removeProfilePhoto(){
+  state.profile=state.profile||{name:'',photo:''};state.profile.photo='';
+  await saveState();renderProfile();toast('S’ha recuperat la inicial del nom.');
+}
 function exportBackup(){
   const blob=new Blob([JSON.stringify({app:'ESTONA',formatVersion:1,exportedAt:new Date().toISOString(),state},null,2)],{type:'application/json'});
   const url=URL.createObjectURL(blob);
@@ -168,7 +205,7 @@ async function importBackup(file){
     if(data.app!=='ESTONA'||data.formatVersion!==1||!data.state||
       typeof data.state.xp!=='number'||!Array.isArray(data.state.completedLessons)||!data.state.settings)throw new Error('invalid');
     if(!confirm('La restauració substituirà el progrés i les preferències actuals. Vols continuar?'))return;
-    state={...defaultState(),...data.state,settings:{...defaultState().settings,...data.state.settings}};
+    state={...defaultState(),...data.state,profile:{...defaultState().profile,...(data.state.profile||{})},settings:{...defaultState().settings,...data.state.settings}};
     await saveState();
     applySettings();renderWorlds();renderStats();
     toast('Còpia restaurada correctament.');
@@ -220,6 +257,10 @@ function init(){
   });
   document.getElementById('start-practice').addEventListener('click',startSession);
   document.getElementById('exit-session').addEventListener('click',()=>showView('practicar'));
+  document.getElementById('profile-name-input').addEventListener('change',saveProfileName);
+  document.getElementById('profile-name-input').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();saveProfileName();e.target.blur();}});
+  document.getElementById('profile-photo-input').addEventListener('change',e=>{saveProfilePhoto(e.target.files[0]);e.target.value='';});
+  document.getElementById('remove-profile-photo').addEventListener('click',removeProfilePhoto);
   document.getElementById('export-data').addEventListener('click',exportBackup);
   document.getElementById('import-data').addEventListener('change',e=>{
     if(e.target.files[0])importBackup(e.target.files[0]);e.target.value='';
@@ -235,6 +276,7 @@ function init(){
   try{
     db=await openDB();state=await getState();
     if(!Array.isArray(state.completedLessons))state.completedLessons=[];
+    state.profile={...defaultState().profile,...(state.profile||{})};
     if(!state.practiceBest||typeof state.practiceBest!=='object')state.practiceBest={};
     state.settings={...defaultState().settings,...(state.settings||{})};
     init();
