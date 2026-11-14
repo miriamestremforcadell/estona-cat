@@ -26,13 +26,13 @@ Després obre `http://localhost:8000`.
 
 ## Estat important
 
-Aquesta versió és una base d'interfície i arquitectura, no una versió educativa acabada. Les tres primeres lliçons del món «Els fonaments» tenen contingut marcat com a validat. Els altres set mons permeten consultar la introducció teòrica, però les lliçons i activitats encara estan en preparació. Les activitats de mostra no s'activen ni es consideren contingut publicable.
+Aquesta versió incorpora 25 lliçons distribuïdes en vuit mons, 48 combinacions bàsiques del sistema de campanar, 36 alternatives generades del sistema de rellotge i exemples revisats de minuts, mitjos quarts, aproximacions i sistema internacional. Les vuit modalitats de pràctica utilitzen exemples marcats com a validats. El banc encara s'ha d'ampliar i sotmetre a proves lingüístiques i pedagògiques més extenses.
 
-Encara falten el banc d'exercicis revisat, els àudios enregistrats, la validació completa d'accessibilitat i les proves reals en Safari/iOS. El funcionament offline s'ha de verificar en dispositius reals abans de donar-lo per garantit.
+Encara falten l'ampliació del banc d'exercicis, els àudios enregistrats, la validació completa d'accessibilitat i les proves reals en Safari/iOS. El funcionament offline s'ha de verificar en dispositius reals abans de donar-lo per garantit.
 
 ## Continguts i fonts
 
-Els continguts educatius s'han separat de la lògica de la interfície a `content.js`. Les expressions publicables han de tenir estat `validat`. Les primeres lliçons es basen en l'Optimot (fitxa 6655/11) i la GIEC (§ 31.2.5.1). No s'hi han d'afegir exercicis no revisats ni respostes suposadament correctes.
+Els continguts educatius s'han separat de la lògica de la interfície a `content.js`. Les expressions publicables han de tenir estat `validat`. El banc revisat es basa principalment en la GIEC en línia (§ 31.2.5.1 i § 31.2.3) i incorpora l'Optimot com a font complementària. Les formes del sistema de rellotge es reconeixen com a vàlides segons els usos territorials; les aproximacions no es converteixen en minuts exactes. No s'hi han d'afegir exercicis no revisats ni respostes suposadament correctes.
 
 ## Drets
 
