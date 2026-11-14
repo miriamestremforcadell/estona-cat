@@ -18,13 +18,13 @@
         <img src="assets/estona-icon.svg" alt="" class="brand-icon">
         <span><strong>ESTONA</strong><small>Aprèn a dir les hores en català</small></span>
       </a>
-      <button class="icon-button" id="quick-profile" aria-label="Obre el perfil" title="Perfil">☼</button>
+      <button class="icon-button profile-avatar quick-avatar" id="quick-profile" aria-label="Obre el perfil" title="Perfil">E</button>
     </header>
 
     <main id="main-content" tabindex="-1">
       <section class="view active" id="view-inici" data-view="inici" aria-labelledby="home-title">
         <div class="eyebrow">EL PLAER DE DIR-HO BÉ</div>
-        <h1 id="home-title">Bon dia!<br><em>Continuem aprenent?</em></h1>
+        <h1 id="home-title"><span id="home-greeting">Bon dia!</span><br><em>Continuem aprenent?</em></h1>
         <p class="intro">Descobreix la manera tradicional catalana de dir les hores, pas a pas.</p>
         <article class="continue-card">
           <div class="continue-copy"><span class="tag">CONTINUA PER ON ERES</span><h2 id="continue-title">Els fonaments</h2><p id="continue-subtitle">Lliçó 1 · Com funciona el sistema de campanar</p><div class="progress-track"><span id="continue-progress" style="width:0%"></span></div></div>
@@ -62,7 +62,8 @@
 
       <section class="view" id="view-perfil" data-view="perfil" aria-labelledby="profile-title">
         <div class="eyebrow">EL TEU ESPAI</div><h1 id="profile-title">El teu <em>perfil.</em></h1>
-        <div class="profile-summary"><div class="profile-seal">E</div><div><strong>Aprenent d'ESTONA</strong><span id="profile-level">Nivell 1 · Primeres passes</span></div><div class="xp-pill" id="profile-xp">0 XP</div></div>
+        <div class="profile-summary"><div class="profile-avatar" id="profile-avatar" aria-label="Inicial o fotografia del perfil">E</div><div class="profile-identity"><strong id="profile-name">Aprenent d'ESTONA</strong><span id="profile-level">Nivell 1 · Primeres passes</span></div><div class="xp-pill" id="profile-xp">0 XP</div></div>
+        <div class="panel settings-panel"><h2>El teu perfil</h2><label class="field-label" for="profile-name-input">Com et vols dir?</label><input class="profile-name-input" id="profile-name-input" type="text" maxlength="40" autocomplete="name" placeholder="Escriu el teu nom"><p class="muted">El nom i la fotografia només es desen en aquest dispositiu.</p><div class="profile-photo-actions"><label class="secondary-button file-button">Tria una fotografia<input type="file" id="profile-photo-input" accept="image/*" hidden></label><button class="subtle-link" id="remove-profile-photo" type="button" hidden>Fes servir la inicial</button></div></div>
         <div class="panel settings-panel"><h2>Aparença i accessibilitat</h2><label class="setting-row"><span><strong>Mode d'aparença</strong><small>Segueix el tema del dispositiu o tria'n un.</small></span><select id="theme-select"><option value="system">Automàtic</option><option value="light">Clar</option><option value="dark">Fosc</option></select></label><label class="setting-row"><span><strong>Mida del text</strong><small>Ajust manual, a més de l'adaptació automàtica.</small></span><select id="text-size"><option value="normal">Normal</option><option value="large">Gran</option><option value="xlarge">Molt gran</option></select></label><label class="setting-row"><span><strong>Redueix les animacions</strong><small>Minimitza els moviments de la interfície.</small></span><input type="checkbox" id="reduce-motion"></label><label class="setting-row"><span><strong>Sons de l'aplicació</strong><small>Desactivats per defecte.</small></span><input type="checkbox" id="sounds-enabled"></label></div>
         <div class="panel settings-panel"><h2>Les teves dades</h2><p class="muted">El progrés es desa en aquest dispositiu. Pots exportar-ne una còpia o restaurar-ne una d'anterior.</p><div class="button-stack"><button class="secondary-button" id="export-data">Exporta una còpia de seguretat</button><label class="secondary-button file-button">Restaura una còpia de seguretat<input type="file" id="import-data" accept="application/json,.json" hidden></label></div><p class="fine-print">Si esborres les dades de Safari o reinstal·les l'aplicació, pots perdre el progrés si no en tens una còpia.</p></div>
         <div class="panel settings-panel"><h2>Sobre ESTONA</h2><div class="setting-row"><span><strong>Versió</strong><small>Banc lingüístic revisat i pràctica interactiva 0.5.0</small></span><span class="version">0.5.0</span></div><p class="fine-print">El banc inclou 48 combinacions bàsiques de quarts, alternatives del sistema de rellotge, exemples de minuts, mitjos quarts i expressions aproximatives contrastades amb la GIEC. Les expressions aproximatives no es tracten com a minuts exactes.</p></div>
