@@ -40,6 +40,25 @@
   const lesson=(id,title,explanation,examples=[],sourceIds=source)=>({
     id,title,status:'validat',explanation,examples,sourceIds
   });
+  const minuteWords={5:'cinc',10:'deu'};
+  const precisionGroups={afterHour:[],afterFirstQuarter:[],afterSecondQuarter:[],afterThirdQuarter:[]};
+  for(let h=1;h<=12;h++){
+    for(const m of [5,10]){
+      precisionGroups.afterHour.push({time:pad(h)+':'+pad(m),expression:hourPhrase(h)+' i '+minuteWords[m]+' minuts',status:'validat',note:m+' minuts després de '+hourPhrase(h)+'.',sourceIds:source});
+    }
+    for(const [quarter,group] of [[1,precisionGroups.afterFirstQuarter],[2,precisionGroups.afterSecondQuarter],[3,precisionGroups.afterThirdQuarter]]){
+      for(const m of [5,10]){
+        const qText=quarter===1?'un quart':quarter===2?'dos quarts':'tres quarts';
+        group.push({time:pad(h)+':'+pad(quarter*15+m),expression:qText+' i '+minuteWords[m]+' '+nextDe(h),status:'validat',note:m+' minuts després de '+qText+' de '+nextName(h)+'.',sourceIds:source});
+      }
+    }
+  }
+  const precisionLessons=[
+    lesson('precisio-01','Minuts després de l’hora','Quan els minuts afegits no arriben a un quart, es poden comptar des de l’hora precedent: «les vuit i cinc (minuts)», «les vuit i deu (minuts)».',precisionGroups.afterHour,source),
+    lesson('precisio-02','Minuts després del primer quart','Els minuts també es poden afegir al quart precedent amb «i»: «un quart i cinc de nou», «un quart i deu de nou».',precisionGroups.afterFirstQuarter,source),
+    lesson('precisio-03','Minuts després de dos quarts','Després de dos quarts, podem afegir els minuts al quart precedent: «dos quarts i cinc de nou», «dos quarts i deu de nou».',precisionGroups.afterSecondQuarter,source),
+    lesson('precisio-04','Minuts després de tres quarts','També podem afegir minuts a tres quarts: «tres quarts i cinc de nou», «tres quarts i deu de nou».',precisionGroups.afterThirdQuarter,source)
+  ];
   const quarterLessons=[
     lesson('quarts-01','Les hores en punt','Les hores s’expressen amb el femení del numeral cardinal precedit de l’article definit: «la una», «les dues», «les tres»… Per indicar que és exactament aquella hora, podem afegir «en punt».',quarterExamples.filter(x=>x.time.endsWith(':00'))),
     lesson('quarts-02','Un quart','El primer quart indica que ha passat un quart d’hora de l’hora en curs. En el sistema de campanar, el numeral indica els quarts transcorreguts i «de» introdueix l’hora en curs: «un quart de vuit».',quarterExamples.filter(x=>x.time.endsWith(':15'))),
@@ -64,11 +83,11 @@
       lesson('mitjos-03','Precisió sense falsa exactitud','Els mitjos quarts ajuden a situar-se aproximadament dins l’hora. En els exercicis caldrà interpretar-los com a franges o aproximacions, no com a instants exactes calculats al segon.',[],source)
      ]},
     {id:'precisio',title:'La precisió',description:'Expressa els minuts que acompanyen els quarts.',
-     theory:'Els minuts es poden afegir al quart precedent amb «i» («tres quarts i un minut d’una») o a l’hora precedent quan la fracció afegida no arriba a un quart («la una i cinc minuts»). El nom «minut(s)» és opcional en exemples com «la una i cinc».',
+     theory:'Els minuts es poden afegir a l’hora precedent quan la fracció afegida no arriba a un quart («les vuit i cinc minuts») o al quart precedent mitjançant «i» («un quart i cinc de nou», «dos quarts i deu de nou»). El nom «minut(s)» és opcional en exemples com «la una i cinc».',
      lessons:[
-      lesson('precisio-01','Minuts després d’un quart','Quan els minuts s’afegeixen al quart precedent, fem servir «i»: «tres quarts i un minut d’una». La forma és documentada per la GIEC.',[{time:'12:46',expression:'tres quarts i un minut d’una',status:'validat',note:'Un minut afegit als tres quarts de dotze.'}],source),
-      lesson('precisio-02','Minuts després de l’hora','Quan la fracció afegida no arriba a un quart, podem comptar des de l’hora precedent: «la una i cinc (minuts)».', [{time:'13:05',expression:'la una i cinc minuts',status:'validat',note:'Cinc minuts després de la una.'}],source),
-      lesson('precisio-03','No confonguis el patró','La tria entre afegir els minuts al quart precedent o a l’hora precedent depèn de la fracció. No extrapolem una única plantilla a tots els minuts sense comprovar-la.',[],source)
+      ...precisionLessons,
+      lesson('precisio-05','Un exemple amb un minut','La GIEC també documenta minuts individuals afegits al quart precedent: «tres quarts i un minut d’una».',[{time:'12:46',expression:'tres quarts i un minut d’una',status:'validat',note:'Un minut afegit als tres quarts de dotze.'}],source),
+      lesson('precisio-06','Un exemple amb cinc minuts','Quan els minuts no arriben a un quart, els podem afegir a l’hora precedent: «la una i cinc (minuts)».',[{time:'13:05',expression:'la una i cinc minuts',status:'validat',note:'Cinc minuts després de la una.'}],source)
      ]},
     {id:'expressions',title:'Les expressions',description:'Incorpora expressions temporals i maneres de situar-te en el temps.',
      theory:'A més de les hores precises, el català disposa d’expressions aproximatives. La GIEC documenta «a punt de tocar les set», «les set tocades», «un quart tocat» i «a quarts de set». Són expressions contextuals, no etiquetes d’un minut exacte.',
