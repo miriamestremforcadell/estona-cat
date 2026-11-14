@@ -92,16 +92,13 @@
     $('#answer-feedback').textContent='Pista: pensa en l’hora que ve després. «'+item.expression.split(' de ').slice(-1)[0]+'» és la referència.';
   }
   function relationUI(item, items, stage) {
-    stage.appendChild(el('p','game-instruction','Selecciona una hora de l’esquerra i l’expressió que hi correspon a la dreta.'));
+    stage.appendChild(el('p','game-instruction','Relaciona l’hora de l’esquerra amb la seva expressió tradicional de la dreta.'));
     const grid=el('div','matching-grid'), left=el('div','matching-column'), right=el('div','matching-column');
-    let selectedTime=null;
-    shuffled(items).forEach(x=>addButton(left,x.time,()=>{selectedTime=x.time;left.querySelectorAll('button').forEach(b=>b.classList.toggle('selected',b.textContent===x.time));}));
-    shuffled(items).forEach(x=>addButton(right,x.expression,()=>{if(!selectedTime){$('#answer-feedback').textContent='Primer selecciona una hora.';return;} answer(selectedTime===item.time && x.time===item.time ? item.expression : x.expression);}));
+    left.appendChild(el('span','matching-label','HORA'));
+    right.appendChild(el('span','matching-label','EXPRESSIÓ'));
+    left.appendChild(el('div','matching-time',item.time));
+    shuffled(items).forEach(x=>addButton(right,x.expression,()=>answer(x.time===item.time?item.expression:x.expression),'match-option'));
     grid.append(left,right);stage.appendChild(grid);
-    stage.dataset.relationTarget=item.time;
-    // Make the active pair explicit for screen readers and avoid an unresolvable match.
-    const note=el('p','muted','En aquesta ronda, la parella que has de trobar és una de les quatre hores i la seva expressió.');
-    stage.appendChild(note);
   }
   function build() {
     const stage=$('#game-stage'); stage.innerHTML='';
