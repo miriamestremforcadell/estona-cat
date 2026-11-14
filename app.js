@@ -14,7 +14,7 @@ const modes=[
 ];
 
 function defaultState(){
-  return {version:1,xp:0,completedLessons:[],worldsUnlocked:1,streak:0,lastPracticeDate:null,
+  return {version:1,xp:0,completedLessons:[],worldsUnlocked:1,streak:0,lastPracticeDate:null,practiceBest:{},
     settings:{theme:'system',textSize:'normal',reduceMotion:false,sounds:false},lastWorld:0};
 }
 function openDB(){
@@ -135,7 +135,18 @@ function renderModes(){
   });
 }
 function startSession(){
-  toast('Les activitats s’activaran quan el banc lingüístic estigui revisat i validat.');
+  if(!window.ESTONA_GAMES){toast('No s’ha pogut carregar el motor de pràctica. Torna-ho a provar.');return;}
+  const count=Number(document.getElementById('practice-count').value)||5;
+  window.ESTONA_GAMES.start({mode:activeMode,count,
+    onComplete:async earned=>{
+      state.practiceBest=state.practiceBest||{};
+      const previous=state.practiceBest[activeMode]||0;
+      if(earned>previous){state.xp+=earned;state.practiceBest[activeMode]=earned;toast('Has superat la teva millor puntuació. XP afegits!');}
+      else toast('Bona pràctica! Per guanyar XP de nou, supera la teva millor puntuació en aquesta modalitat.');
+      await saveState();renderStats();
+    },
+    onExit:()=>{showView('practicar');}
+  });
 }
 function localDate(date=new Date()){
   const y=date.getFullYear(),m=String(date.getMonth()+1).padStart(2,'0'),d=String(date.getDate()).padStart(2,'0');
@@ -198,6 +209,7 @@ function init(){
     toast('Lliçó completada. Els XP només s’atorguen la primera vegada.');
   });
   document.getElementById('start-practice').addEventListener('click',startSession);
+  document.getElementById('exit-session').addEventListener('click',()=>showView('practicar'));
   document.getElementById('export-data').addEventListener('click',exportBackup);
   document.getElementById('import-data').addEventListener('change',e=>{
     if(e.target.files[0])importBackup(e.target.files[0]);e.target.value='';
@@ -213,6 +225,7 @@ function init(){
   try{
     db=await openDB();state=await getState();
     if(!Array.isArray(state.completedLessons))state.completedLessons=[];
+    if(!state.practiceBest||typeof state.practiceBest!=='object')state.practiceBest={};
     state.settings={...defaultState().settings,...(state.settings||{})};
     init();
     if('serviceWorker'in navigator&&location.protocol!=='file:')navigator.serviceWorker.register('./service-worker.js').catch(()=>{});
