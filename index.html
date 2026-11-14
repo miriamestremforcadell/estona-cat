@@ -72,7 +72,7 @@
 
       <section class="view" id="view-diccionari" data-view="diccionari" aria-labelledby="dictionary-title"><button class="back-link" id="back-to-learn-2">← Torna a aprendre</button><div class="eyebrow">CONSULTA LINGÜÍSTICA</div><h1 id="dictionary-title">El <em>diccionari.</em></h1><p class="intro">Un espai de consulta per entendre els termes i les expressions del sistema horari català.</p><input class="search-input" id="dictionary-search" type="search" placeholder="Cerca un terme…" aria-label="Cerca un terme"><div id="dictionary-entries" class="dictionary-list"></div><p class="fine-print">Les definicions i les fonts s'afegiran quan hagin estat contrastades amb les obres lingüístiques de referència.</p></section>
 
-      <section class="view" id="view-practice-session" data-view="practice-session" aria-labelledby="session-title"><button class="back-link" id="exit-session">← Surt de la pràctica</button><div class="eyebrow">PRÀCTICA AUTÒNOMA</div><div class="session-progress"><span id="question-counter">PREGUNTA 1 DE 5</span><span id="session-xp">0 XP</span></div><div class="progress-track"><span id="question-progress" style="width:0%"></span></div><h1 id="session-title">Com diries aquesta hora?</h1><div class="panel question-panel"><p class="muted">Exercici de mostra, pendent de validació</p><div class="time-prompt" id="time-prompt">08:15</div><div class="answer-options" id="answer-options"></div><button class="subtle-link" id="hint-button">Necessito una pista</button><p class="feedback" id="answer-feedback" aria-live="polite"></p><button class="primary-button" id="next-question" disabled>Comprova la resposta <span>→</span></button></div></section>
+      <section class="view" id="view-practice-session" data-view="practice-session" aria-labelledby="session-title"><button class="back-link" id="exit-session">← Surt de la pràctica</button><div class="eyebrow">PRÀCTICA AUTÒNOMA</div><div class="session-progress"><span id="question-counter">PREGUNTA 1 DE 5</span><span id="session-xp">0 XP</span></div><div class="progress-track"><span id="question-progress" style="width:0%"></span></div><h1 id="session-title">Com diries aquesta hora?</h1><div class="panel question-panel"><div id="game-stage"></div><button class="subtle-link" id="hint-button" type="button">Necessito una pista</button><p class="feedback" id="answer-feedback" aria-live="polite"></p><button class="primary-button" id="next-question" type="button" disabled>Comprova la resposta →</button></div></section>
     </main>
 
     <nav class="bottom-nav" aria-label="Navegació principal">
@@ -85,6 +85,7 @@
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
   </div>
   <script src="content.js" defer></script>
+  <script src="games.js" defer></script>
   <script src="app.js" defer></script>
 </body>
 </html>
