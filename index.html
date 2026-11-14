@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="ca">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f7f3e9">
+  <meta name="description" content="ESTONA — Aprèn a dir les hores en català.">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="assets/estona-icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/estona-icon.svg">
+  <link rel="stylesheet" href="styles.css">
+  <title>ESTONA — Aprèn a dir les hores en català</title>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="#inici" aria-label="ESTONA, inici">
+        <img src="assets/estona-icon.svg" alt="" class="brand-icon">
+        <span><strong>ESTONA</strong><small>Aprèn a dir les hores en català</small></span>
+      </a>
+      <button class="icon-button" id="quick-profile" aria-label="Obre el perfil" title="Perfil">☼</button>
+    </header>
+
+    <main id="main-content" tabindex="-1">
+      <section class="view active" id="view-inici" data-view="inici" aria-labelledby="home-title">
+        <div class="eyebrow">EL PLAER DE DIR-HO BÉ</div>
+        <h1 id="home-title">Bon dia!<br><em>Continuem aprenent?</em></h1>
+        <p class="intro">Descobreix la manera tradicional catalana de dir les hores, pas a pas.</p>
+        <article class="continue-card">
+          <div class="continue-copy"><span class="tag">CONTINUA PER ON ERES</span><h2 id="continue-title">Els fonaments</h2><p id="continue-subtitle">Lliçó 1 · Com funciona el sistema de campanar</p><div class="progress-track"><span id="continue-progress" style="width:0%"></span></div></div>
+          <button class="round-arrow" id="continue-button" aria-label="Continua la lliçó">↗</button>
+        </article>
+        <div class="section-heading"><div><span class="eyebrow">UNA ESTONA CADA DIA</span><h2>Avui et proposem</h2></div></div>
+        <div class="home-grid">
+          <button class="feature-card practice-feature" data-go="practicar"><span class="feature-symbol">✳</span><span class="tag">5 MINUTS</span><strong>Pràctica ràpida</strong><small>Posa en joc el que ja saps.</small><span class="text-link">Comença →</span></button>
+          <button class="feature-card challenge-feature" data-go="reptes"><span class="feature-symbol">✧</span><span class="tag">REPTE DIARI</span><strong>Una nova fita</strong><small>Un petit repte per mantenir el fil.</small><span class="text-link">Descobreix-lo →</span></button>
+        </div>
+        <div class="section-heading"><div><span class="eyebrow">EL TEU CAMÍ</span><h2>El progrés</h2></div><button class="subtle-link" data-go="perfil">Veure-ho tot →</button></div>
+        <div class="stats-row"><div class="stat-card"><strong id="home-xp">0</strong><span>XP acumulats</span></div><div class="stat-card"><strong id="home-lessons">0</strong><span>Lliçons superades</span></div><div class="stat-card"><strong id="home-streak">0</strong><span>Dies de ratxa</span></div></div>
+      </section>
+
+      <section class="view" id="view-aprendre" data-view="aprendre" aria-labelledby="learn-title">
+        <div class="eyebrow">CONEIX EL SISTEMA</div><h1 id="learn-title">Aprendre <em>amb sentit.</em></h1>
+        <p class="intro">Vuit mons per entendre, construir i fer teves les expressions horàries catalanes.</p>
+        <div class="filter-row"><span class="filter-label">ELS VUIT MONS</span><button class="subtle-link" id="show-glossary">Obre el diccionari ↗</button></div>
+        <div class="world-list" id="world-list"></div>
+      </section>
+
+      <section class="view" id="view-practicar" data-view="practicar" aria-labelledby="practice-title">
+        <div class="eyebrow">POSA-HO EN PRÀCTICA</div><h1 id="practice-title">Practicar <em>al teu ritme.</em></h1>
+        <p class="intro">Tria què vols entrenar. Sense presses, amb pistes i explicacions quan les necessitis.</p>
+        <div class="panel"><h2>Què vols practicar?</h2><div class="choice-list" id="practice-modes"></div><label class="field-label" for="practice-count">Nombre de preguntes</label><select id="practice-count"><option>5</option><option selected>10</option><option>15</option><option>20</option></select><button class="primary-button" id="start-practice">Comença la pràctica <span>→</span></button></div>
+      </section>
+
+      <section class="view" id="view-reptes" data-view="reptes" aria-labelledby="challenges-title">
+        <div class="eyebrow">PETITES FITES, GRANS PASSOS</div><h1 id="challenges-title">Reptes <em>per avançar.</em></h1>
+        <p class="intro">Propostes per consolidar el que aprens i descobrir què ja domines.</p>
+        <article class="challenge-card"><span class="challenge-mark">✧</span><span class="tag">REPTE DIARI</span><h2>La primera campanada</h2><p>Reconeix i construeix cinc expressions de les hores en punt i dels quarts.</p><div class="challenge-meta"><span>5 preguntes</span><span>+30 XP</span></div><button class="primary-button" data-go="practicar">Accepta el repte <span>→</span></button></article>
+        <div class="section-heading"><div><span class="eyebrow">OBJECTIUS</span><h2>El teu progrés</h2></div></div>
+        <div class="panel compact-panel"><div class="goal-line"><span>Primeres passes</span><strong>0 / 3 lliçons</strong></div><div class="progress-track"><span style="width:0%"></span></div><p class="muted">Completa les primeres lliçons per començar a omplir el teu camí.</p></div>
+      </section>
+
+      <section class="view" id="view-perfil" data-view="perfil" aria-labelledby="profile-title">
+        <div class="eyebrow">EL TEU ESPAI</div><h1 id="profile-title">El teu <em>perfil.</em></h1>
+        <div class="profile-summary"><div class="profile-seal">E</div><div><strong>Aprenent d'ESTONA</strong><span id="profile-level">Nivell 1 · Primeres passes</span></div><div class="xp-pill" id="profile-xp">0 XP</div></div>
+        <div class="panel settings-panel"><h2>Aparença i accessibilitat</h2><label class="setting-row"><span><strong>Mode d'aparença</strong><small>Segueix el tema del dispositiu o tria'n un.</small></span><select id="theme-select"><option value="system">Automàtic</option><option value="light">Clar</option><option value="dark">Fosc</option></select></label><label class="setting-row"><span><strong>Mida del text</strong><small>Ajust manual, a més de l'adaptació automàtica.</small></span><select id="text-size"><option value="normal">Normal</option><option value="large">Gran</option><option value="xlarge">Molt gran</option></select></label><label class="setting-row"><span><strong>Redueix les animacions</strong><small>Minimitza els moviments de la interfície.</small></span><input type="checkbox" id="reduce-motion"></label><label class="setting-row"><span><strong>Sons de l'aplicació</strong><small>Desactivats per defecte.</small></span><input type="checkbox" id="sounds-enabled"></label></div>
+        <div class="panel settings-panel"><h2>Les teves dades</h2><p class="muted">El progrés es desa en aquest dispositiu. Pots exportar-ne una còpia o restaurar-ne una d'anterior.</p><div class="button-stack"><button class="secondary-button" id="export-data">Exporta una còpia de seguretat</button><label class="secondary-button file-button">Restaura una còpia de seguretat<input type="file" id="import-data" accept="application/json,.json" hidden></label></div><p class="fine-print">Si esborres les dades de Safari o reinstal·les l'aplicació, pots perdre el progrés si no en tens una còpia.</p></div>
+        <div class="panel settings-panel"><h2>Sobre ESTONA</h2><div class="setting-row"><span><strong>Versió</strong><small>Base de desenvolupament 0.2.0</small></span><span class="version">0.2.0</span></div><p class="fine-print">Continguts lingüístics en preparació i revisió. Les activitats encara no formen part d'una versió educativa validada.</p></div>
+      </section>
+
+      <section class="view" id="view-lliço" data-view="lliço" aria-labelledby="lesson-title"><button class="back-link" id="back-to-learn">← Torna als mons</button><div class="eyebrow" id="lesson-world">MÓN 1</div><h1 id="lesson-title">Els fonaments</h1><p class="intro" id="lesson-description"></p><div id="lesson-list" class="lesson-list" aria-label="Lliçons del món"></div><div class="panel lesson-panel"><span class="tag">TEORIA</span><h2 id="lesson-heading">El sistema de campanar</h2><p id="lesson-theory"></p><div class="example-note" id="lesson-example"></div><p class="fine-print">Aquesta és una primera estructura de contingut. Les expressions i explicacions definitives s'incorporaran després de la revisió lingüística.</p></div><button class="primary-button" id="lesson-done">Marca com a llegit <span>→</span></button></section>
+
+      <section class="view" id="view-diccionari" data-view="diccionari" aria-labelledby="dictionary-title"><button class="back-link" id="back-to-learn-2">← Torna a aprendre</button><div class="eyebrow">CONSULTA LINGÜÍSTICA</div><h1 id="dictionary-title">El <em>diccionari.</em></h1><p class="intro">Un espai de consulta per entendre els termes i les expressions del sistema horari català.</p><input class="search-input" id="dictionary-search" type="search" placeholder="Cerca un terme…" aria-label="Cerca un terme"><div id="dictionary-entries" class="dictionary-list"></div><p class="fine-print">Les definicions i les fonts s'afegiran quan hagin estat contrastades amb les obres lingüístiques de referència.</p></section>
+
+      <section class="view" id="view-practice-session" data-view="practice-session" aria-labelledby="session-title"><button class="back-link" id="exit-session">← Surt de la pràctica</button><div class="eyebrow">PRÀCTICA AUTÒNOMA</div><div class="session-progress"><span id="question-counter">PREGUNTA 1 DE 5</span><span id="session-xp">0 XP</span></div><div class="progress-track"><span id="question-progress" style="width:0%"></span></div><h1 id="session-title">Com diries aquesta hora?</h1><div class="panel question-panel"><p class="muted">Exercici de mostra, pendent de validació</p><div class="time-prompt" id="time-prompt">08:15</div><div class="answer-options" id="answer-options"></div><button class="subtle-link" id="hint-button">Necessito una pista</button><p class="feedback" id="answer-feedback" aria-live="polite"></p><button class="primary-button" id="next-question" disabled>Comprova la resposta <span>→</span></button></div></section>
+    </main>
+
+    <nav class="bottom-nav" aria-label="Navegació principal">
+      <button class="nav-item active" data-view-target="inici"><span class="nav-icon">⌂</span><span>Inici</span></button>
+      <button class="nav-item" data-view-target="aprendre"><span class="nav-icon">▤</span><span>Aprendre</span></button>
+      <button class="nav-item" data-view-target="practicar"><span class="nav-icon">✳</span><span>Practicar</span></button>
+      <button class="nav-item" data-view-target="reptes"><span class="nav-icon">✧</span><span>Reptes</span></button>
+      <button class="nav-item" data-view-target="perfil"><span class="nav-icon">◯</span><span>Perfil</span></button>
+    </nav>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  </div>
+  <script src="content.js" defer></script>
+  <script src="app.js" defer></script>
+</body>
+</html>
