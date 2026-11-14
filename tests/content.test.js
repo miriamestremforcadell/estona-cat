@@ -15,7 +15,7 @@ assert.equal(unique.get('01:15').expression, 'un quart de dues');
 assert.equal(unique.get('12:15').expression, "un quart d'una");
 assert.equal(unique.get('08:30').expression, 'dos quarts de nou');
 assert.equal(unique.get('11:45').expression, 'tres quarts de dotze');
-assert.equal(unique.get('12:46').expression, "tres quarts i un minut d'una");
+assert.equal(unique.get('12:46').expression, "tres quarts i un minut d’una");
 assert.equal(unique.get('13:05').expression, 'la una i cinc minuts');
 assert.equal(worlds.length, 8, 'ESTONA ha de mantenir els vuit mons');
 assert.equal(lessons.filter(x => x.status === 'validat').length, 25, 'Hi ha d’haver 25 lliçons validades');
