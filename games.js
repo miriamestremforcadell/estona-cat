@@ -162,7 +162,7 @@
         addButton(stage,'Comprova la construcció',()=>answer(chosen.map(i=>tokens[i]).join(' ')),'primary-button game-submit');
         addButton(stage,'Torna a començar',()=>{chosen=[];built.textContent='';wordBank.querySelectorAll('button').forEach(b=>b.disabled=false);},'subtle-link');
       } else {
-        const choices=el('div','answer-options'); optionList(item,items,choices,answer,true); stage.appendChild(choices);
+        const choices=el('div','answer-options'); optionList(item,items,choices,answer,mode==='tria'); stage.appendChild(choices);
       }
     }
   }
@@ -189,6 +189,7 @@
     if(!items.length){ alert('Encara no hi ha expressions validades per practicar.'); return; }
     session={mode,count,items,questions:makeQuestions(mode,count,items),index:0,earned:0,correct:0,validOther:0,incorrect:0,answered:false,onComplete,onExit};
     $('#session-title').textContent=modeNames[mode] || 'Pràctica';
+    $('#answer-feedback').textContent='';
     $('#next-question').hidden=false; $('#hint-button').hidden=false;
     $('#next-question').disabled=true; $('#next-question').textContent='Comprova la resposta →';
     $('#hint-button').onclick=showHint;
