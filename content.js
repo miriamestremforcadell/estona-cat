@@ -7,7 +7,7 @@
   const nums=['una','dues','tres','quatre','cinc','sis','set','vuit','nou','deu','onze','dotze'];
   const pad=n=>String(n).padStart(2,'0');
   const hourName=h=>nums[(h-1)%12];
-  const hourPhrase=h=>h===1?'la una':'les '+hourName(h);
+  const hourPhrase=h=>{const n=((h-1)%12)+1;return n===1?'la una':'les '+nums[n-1];};
   const nextName=h=>nums[h%12];
   const nextDe=h=>nextName(h)==='una'?"d'una":'de '+nextName(h);
   const campanar=(h,m)=>{
