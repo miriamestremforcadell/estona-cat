@@ -187,6 +187,7 @@
   function start({mode,count,onComplete,onExit}) {
     const items=getItems();
     if(!items.length){ alert('Encara no hi ha expressions validades per practicar.'); return; }
+    count=Math.max(1,Math.min(Number(count)||5,items.length));
     session={mode,count,items,questions:makeQuestions(mode,count,items),index:0,earned:0,correct:0,validOther:0,incorrect:0,answered:false,onComplete,onExit};
     $('#session-title').textContent=modeNames[mode] || 'Pràctica';
     $('#answer-feedback').textContent='';
