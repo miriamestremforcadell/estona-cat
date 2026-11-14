@@ -38,11 +38,11 @@
     });
     return items;
   }
-  function classify(item, answer) {
+  function classify(item, answer, strict=true) {
     const value = normalize(answer);
     if (value === normalize(item.expression)) return 'target-correct';
     if ((clockVariants[item.time] || []).some(v => normalize(v) === value)) return 'valid-but-not-target';
-    return 'incorrect';
+    return strict ? 'incorrect' : 'needs-review';
   }
   function shuffled(list) {
     const copy = list.slice();
@@ -59,8 +59,8 @@
     const b=el('button',cls,label); b.type='button'; b.addEventListener('click',onClick); parent.appendChild(b); return b;
   }
   function optionList(item, items, parent, onAnswer, includeAlternative=true) {
-    const opts = items.filter(x=>x.time!==item.time).map(x=>({label:x.expression,value:x.expression}));
-    opts.push({label:item.expression,value:item.expression});
+    const distractors=shuffled(items.filter(x=>x.time!==item.time)).slice(0,3).map(x=>({label:x.expression,value:x.expression}));
+    const opts=[...distractors,{label:item.expression,value:item.expression}];
     if (includeAlternative && clockVariants[item.time]?.length) opts.push({label:clockVariants[item.time][0],value:clockVariants[item.time][0]});
     shuffled(opts).forEach(o=>addButton(parent,o.label,()=>onAnswer(o.value)));
   }
@@ -69,16 +69,18 @@
     feedback.className='feedback '+result;
     if(result==='target-correct') feedback.textContent='Molt bé! «'+item.expression+'» és la forma que estem practicant.';
     else if(result==='valid-but-not-target') feedback.textContent='Aquesta expressió també és catalana i vàlida, però correspon al sistema de rellotge. Aquí practiquem el sistema de campanar: «'+item.expression+'».';
+    else if(result==='needs-review') feedback.textContent='No podem classificar automàticament aquesta resposta. Pot ser una variant vàlida: revisa la forma de campanar que practiquem, «'+item.expression+'».';
     else feedback.textContent='Encara no. La forma que busquem és «'+item.expression+'». Fixa’t en l’hora següent que prenem com a referència.';
   }
-  function answer(value) {
+  function answer(value, strict=true) {
     if(!session || session.answered) return;
     const item=session.questions[session.index];
-    const result=classify(item,value);
+    const result=classify(item,value,strict);
     session.answered=true;
     if(result==='target-correct') session.earned+=10;
     if(result==='target-correct') session.correct++;
     else if(result==='valid-but-not-target') session.validOther++;
+    else if(result==='needs-review') session.needsReview++;
     else session.incorrect++;
     renderFeedback(result,item,value);
     $('#next-question').disabled=false;
@@ -92,12 +94,27 @@
     $('#answer-feedback').textContent='Pista: pensa en l’hora que ve després. «'+item.expression.split(' de ').slice(-1)[0]+'» és la referència.';
   }
   function relationUI(item, items, stage) {
-    stage.appendChild(el('p','game-instruction','Relaciona l’hora de l’esquerra amb la seva expressió tradicional de la dreta.'));
+    stage.appendChild(el('p','game-instruction','Relaciona cada hora amb la seva expressió. Selecciona primer una hora i després la forma corresponent.'));
+    const sample=shuffled(items.filter(x=>x.time!==item.time)).slice(0,3);
+    const pairs=shuffled([item,...sample]);
     const grid=el('div','matching-grid'), left=el('div','matching-column'), right=el('div','matching-column');
     left.appendChild(el('span','matching-label','HORA'));
     right.appendChild(el('span','matching-label','EXPRESSIÓ'));
-    left.appendChild(el('div','matching-time',item.time));
-    shuffled(items).forEach(x=>addButton(right,x.expression,()=>answer(x.time===item.time?item.expression:x.expression),'match-option'));
+    let selectedTime=null, selectedExpression=null;
+    const timeButtons=[];
+    pairs.forEach(x=>timeButtons.push(addButton(left,x.time,()=>{
+      selectedTime=x.time; timeButtons.forEach(b=>b.classList.toggle('selected',b.textContent===x.time));
+      resolvePair();
+    },'match-option')));
+    shuffled(pairs).forEach(x=>addButton(right,x.expression,()=>{
+      selectedExpression=x; right.querySelectorAll('button').forEach(b=>b.classList.toggle('selected',b.textContent===x.expression));
+      resolvePair();
+    },'match-option'));
+    function resolvePair(){
+      if(!selectedTime || !selectedExpression)return;
+      const isCorrect=selectedTime===selectedExpression.time && selectedTime===item.time;
+      answer(isCorrect?item.expression:selectedExpression.expression,true);
+    }
     grid.append(left,right);stage.appendChild(grid);
   }
   function build() {
@@ -146,8 +163,8 @@
       if(mode==='escriu'){
         const input=el('input','game-input'); input.type='text'; input.placeholder='Escriu l’expressió…'; input.autocomplete='off'; input.setAttribute('aria-label','La teva resposta');
         stage.appendChild(input);
-        addButton(stage,'Comprova la resposta',()=>answer(input.value),'primary-button game-submit');
-        input.addEventListener('keydown',e=>{if(e.key==='Enter')answer(input.value);});
+        addButton(stage,'Comprova la resposta',()=>answer(input.value,false),'primary-button game-submit');
+        input.addEventListener('keydown',e=>{if(e.key==='Enter')answer(input.value,false);});
       } else if(mode==='construeix'){
         const tokens=item.expression.split(' ');
         const wordBank=el('div','word-bank'), built=el('div','built-words');
@@ -159,7 +176,7 @@
           },'word-chip');
         });
         stage.append(wordBank,built);
-        addButton(stage,'Comprova la construcció',()=>answer(chosen.map(i=>tokens[i]).join(' ')),'primary-button game-submit');
+        addButton(stage,'Comprova la construcció',()=>answer(chosen.map(i=>tokens[i]).join(' '),false),'primary-button game-submit');
         addButton(stage,'Torna a començar',()=>{chosen=[];built.textContent='';wordBank.querySelectorAll('button').forEach(b=>b.disabled=false);},'subtle-link');
       } else {
         const choices=el('div','answer-options'); optionList(item,items,choices,answer,mode==='tria'); stage.appendChild(choices);
@@ -176,7 +193,7 @@
     $('#session-title').textContent='Pràctica completada!';
     stage.appendChild(el('div','completion-score',session.correct+' / '+session.questions.length));
     stage.appendChild(el('h2','completion-heading','Molt bona feina!'));
-    stage.appendChild(el('p','game-instruction',session.earned+' XP aconseguits · '+session.validOther+' respostes vàlides en un altre sistema · '+session.incorrect+' per repassar.'));
+    stage.appendChild(el('p','game-instruction',session.earned+' XP aconseguits · '+session.validOther+' respostes vàlides en un altre sistema · '+session.incorrect+' respostes incorrectes · '+session.needsReview+' respostes pendents de revisió.'));
     stage.appendChild(el('p','muted','Has practicat: '+modeNames[session.mode]+'. El contingut disponible s’ampliarà a mesura que validem més expressions.'));
     addButton(stage,'Torna a practicar',()=>{session.onExit();},'primary-button');
     $('#next-question').hidden=true; $('#hint-button').hidden=true;
@@ -188,7 +205,7 @@
     const items=getItems();
     if(!items.length){ alert('Encara no hi ha expressions validades per practicar.'); return; }
     count=Math.max(1,Math.min(Number(count)||5,items.length));
-    session={mode,count,items,questions:makeQuestions(mode,count,items),index:0,earned:0,correct:0,validOther:0,incorrect:0,answered:false,onComplete,onExit};
+    session={mode,count,items,questions:makeQuestions(mode,count,items),index:0,earned:0,correct:0,validOther:0,incorrect:0,needsReview:0,answered:false,onComplete,onExit};
     $('#session-title').textContent=modeNames[mode] || 'Pràctica';
     $('#answer-feedback').textContent='';
     $('#next-question').hidden=false; $('#hint-button').hidden=false;
