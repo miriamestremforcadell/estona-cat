@@ -133,7 +133,7 @@
        {expression:'Aviat/Ara tocaran les set',meaning:'Falten molt pocs minuts, menys de mig quart, per a les set.',status:'validat',exactMinute:null,sourceIds:source},
        {expression:'Les set tocades',meaning:'Passen molt pocs minuts, menys de mig quart, de les set.',status:'validat',exactMinute:null,sourceIds:source},
        {expression:'Un quart tocat',meaning:'Passen molt pocs minuts, menys de mig quart, d’un quart.',status:'validat',exactMinute:null,sourceIds:source},
-       {expression:'A quarts de set',meaning:'Franja aproximada descrita per la GIEC; no és una hora exacta.',status:'validat',exactMinute:null,sourceIds:source}
+       {expression:'A quarts de set',meaning:'Franja aproximada: entre un quart tocat i dos quarts i mig de set; en un sentit més ampli, entre un i tres quarts de set o pels volts de dos quarts de set. No és una hora exacta.',status:'validat',exactMinute:null,sourceIds:source}
       ],
       clockSystemExamples:[
        {time:'08:15',expression:'les vuit i quart',status:'validat'},
