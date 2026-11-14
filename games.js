@@ -40,7 +40,8 @@
   }
   function classify(item, answer, strict=true) {
     const value = normalize(answer);
-    if (value === normalize(item.expression)) return 'target-correct';
+    const expected = session?.mode === 'escriu' ? item.time : item.expression;
+    if (value === normalize(expected)) return 'target-correct';
     if ((clockVariants[item.time] || []).some(v => normalize(v) === value)) return 'valid-but-not-target';
     return strict ? 'incorrect' : 'needs-review';
   }
@@ -67,7 +68,7 @@
   function renderFeedback(result, item, answer) {
     const feedback=$('#answer-feedback');
     feedback.className='feedback '+result;
-    if(result==='target-correct') feedback.textContent='Molt bé! «'+item.expression+'» és la forma que estem practicant.';
+    if(result==='target-correct') feedback.textContent=session.mode==='escriu'?'Correcte! '+item.time+' correspon a «'+item.expression+'».':'Molt bé! «'+item.expression+'» és la forma que estem practicant.';
     else if(result==='valid-but-not-target') feedback.textContent='Aquesta expressió també és catalana i vàlida, però correspon al sistema de rellotge. Aquí practiquem el sistema de campanar: «'+item.expression+'».';
     else if(result==='needs-review') feedback.textContent='No podem classificar automàticament aquesta resposta. Pot ser una variant vàlida: revisa la forma de campanar que practiquem, «'+item.expression+'».';
     else feedback.textContent='Encara no. La forma que busquem és «'+item.expression+'». Fixa’t en l’hora següent que prenem com a referència.';
@@ -113,7 +114,8 @@
     function resolvePair(){
       if(!selectedTime || !selectedExpression)return;
       const isCorrect=selectedTime===selectedExpression.time && selectedTime===item.time;
-      answer(isCorrect?item.expression:selectedExpression.expression,true);
+      const wrongExpression=pairs.find(x=>x.time!==item.time).expression;
+      answer(isCorrect?item.expression:wrongExpression,true);
     }
     grid.append(left,right);stage.appendChild(grid);
   }
@@ -124,7 +126,7 @@
     const instruction={
       mira:'Observa l’hora i expressa-la en el sistema de campanar.',
       tria:'Tria la forma del sistema de campanar que correspon a aquesta hora.',
-      escriu:'Escriu l’expressió en català. Pots fer servir accents i apòstrofs.',
+      escriu:'Llegeix l’expressió i escriu l’hora en format HH:MM.',
       construeix:'Toca les paraules en l’ordre correcte per construir l’expressió.',
       escolta:'Escolta l’expressió i identifica a quina hora correspon.',
       corregeix:'L’expressió proposada no correspon a aquesta hora. Tria la correcció.',
@@ -159,9 +161,9 @@
       stage.appendChild(prompt);
       const choices=el('div','answer-options'); optionList(item,items,choices,answer,true); stage.appendChild(choices);
     } else {
-      prompt.textContent=item.time; stage.appendChild(prompt);
-      if(mode==='escriu'){
-        const input=el('input','game-input'); input.type='text'; input.placeholder='Escriu l’expressió…'; input.autocomplete='off'; input.setAttribute('aria-label','La teva resposta');
+      prompt.textContent=mode==='escriu'?item.expression:item.time; stage.appendChild(prompt);
+      if(mode==='escriu' || mode==='mira'){
+        const input=el('input','game-input'); input.type='text'; input.placeholder=mode==='escriu'?'HH:MM':'Escriu l’expressió…'; input.autocomplete='off'; input.setAttribute('aria-label','La teva resposta');
         stage.appendChild(input);
         addButton(stage,'Comprova la resposta',()=>answer(input.value,false),'primary-button game-submit');
         input.addEventListener('keydown',e=>{if(e.key==='Enter')answer(input.value,false);});
