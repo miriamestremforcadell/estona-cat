@@ -26,7 +26,7 @@ Després obre `http://localhost:8000`.
 
 ## Estat important
 
-Aquesta versió incorpora 25 lliçons distribuïdes en vuit mons, 48 combinacions bàsiques del sistema de campanar, 36 alternatives generades del sistema de rellotge i exemples revisats de minuts, mitjos quarts, aproximacions i sistema internacional. Les vuit modalitats de pràctica utilitzen exemples marcats com a validats. El banc encara s'ha d'ampliar i sotmetre a proves lingüístiques i pedagògiques més extenses.
+Aquesta versió incorpora 28 lliçons distribuïdes en vuit mons, 147 expressions horàries úniques validades, 48 combinacions bàsiques del sistema de campanar, 36 alternatives del sistema de rellotge i 96 exemples de minuts en increments de cinc minuts, a més d’exemples revisats de mitjos quarts, aproximacions i sistema internacional. Les vuit modalitats de pràctica utilitzen exemples marcats com a validats. El banc encara s'ha d'ampliar i sotmetre a proves lingüístiques i pedagògiques més extenses.
 
 Encara falten l'ampliació del banc d'exercicis, els àudios enregistrats, la validació completa d'accessibilitat i les proves reals en Safari/iOS. El funcionament offline s'ha de verificar en dispositius reals abans de donar-lo per garantit.
 
