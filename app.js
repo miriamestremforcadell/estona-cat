@@ -176,10 +176,20 @@ async function importBackup(file){
 }
 function renderDictionary(filter=''){
   const entries=[
-    ['Sistema de campanar','Sistema tradicional que divideix l’hora en quatre quarts i pren com a referència l’hora següent.'],
-    ['Quart','Cadascuna de les quatre parts en què es divideix l’hora. En el sistema de campanar es compten respecte de l’hora que ha de venir.'],
-    ['Mig quart','Expressió tradicional que situa aproximadament l’hora entre dos quarts; no designa necessàriament un instant matemàtic exacte.'],
-    ['Hora en punt','Expressió que indica que s’ha arribat exactament a una hora, sense fracció afegida.']
+    ['Sistema de campanar','Sistema de fraccions horàries basat en quarts. És habitual en la major part del català central i nord-occidental.'],
+    ['Sistema de rellotge','Sistema que pren com a base la mitja hora i compta per addició o sostracció. És d’ús general en bona part de la resta del domini lingüístic.'],
+    ['Sistema internacional','Sistema numèric de dotze o vint-i-quatre hores, habitual en horaris, transports i usos tècnics.'],
+    ['Quart','Cadascuna de les quatre parts en què es divideix l’hora. En el sistema de campanar es compten respecte de l’hora en curs.'],
+    ['Mig quart','Subdivisió aproximada d’un quart. No s’ha de convertir automàticament en un nombre exacte de minuts.'],
+    ['Un quart i mig','Construcció documentada per la GIEC: el mig s’afegeix al quart precedent amb la conjunció «i».'],
+    ['Hora en punt','Expressió que indica que s’ha arribat exactament a una hora. Es pot reforçar amb «en punt».'],
+    ['Hora en curs','L’hora que transcorre i que serveix de referència en les expressions del sistema de campanar.'],
+    ['Minuts afegits al quart','Els minuts es poden afegir al quart precedent mitjançant la conjunció «i».'],
+    ['Minuts afegits a l’hora','Si la fracció afegida no arriba a un quart, els minuts també es poden comptar des de l’hora precedent.'],
+    ['A quarts de','Expressió aproximativa que situa un moment dins una franja horària; no designa una hora exacta.'],
+    ['Tocades','Expressió aproximativa que indica que ja s’ha passat una hora o un quart per pocs minuts.'],
+    ['Durada en quarts','El mot «quart» també pot expressar una durada de quinze minuts; «dos quarts» pot equivaler a mitja hora.'],
+    ['Parts del dia','Expressions com «de la matinada», «del matí», «del migdia», «de la tarda», «del vespre» i «de la nit» situen l’hora en el context del dia.']
   ];
   const target=document.getElementById('dictionary-entries');
   target.innerHTML='';
@@ -188,7 +198,7 @@ function renderDictionary(filter=''){
     const strong=document.createElement('strong');strong.textContent=e[0];
     const p=document.createElement('p');p.textContent=e[1];
     div.append(strong,p);
-    const source=document.createElement('small');source.textContent='Font: Optimot, fitxa 6655/11 · IEC, GIEC § 31.2.5.1';
+    const source=document.createElement('small');source.textContent='Font principal: IEC, GIEC § 31.2.5.1 · § 31.2.3';
     div.appendChild(source);target.appendChild(div);
   });
 }
