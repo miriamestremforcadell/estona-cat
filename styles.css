@@ -181,3 +181,21 @@ body.reduce-motion *,body.reduce-motion *:before,body.reduce-motion *:after { an
 .completion-score { font-family:Georgia,serif; color:var(--blue); font-size:54px; padding:15px; }
 .completion-heading { font-family:Georgia,serif; font-weight:500; font-size:25px; }
 @media(min-width:520px) { .answer-options { grid-template-columns:1fr 1fr; } }
+
+
+/* Relaciona: files reordenables amb ratolí, tacte i teclat */
+.match-row{display:flex;align-items:center;gap:6px;min-height:54px;margin:7px 0}
+.match-fixed{justify-content:stretch}
+.match-draggable{cursor:grab;touch-action:pan-y}
+.match-draggable:active{cursor:grabbing}
+.match-option{display:flex;align-items:center;justify-content:center;box-sizing:border-box;width:100%;min-height:48px;padding:10px 12px;border:1px solid var(--border,#d7dfeb);border-radius:12px;background:var(--card,#fff);font:inherit;text-align:center}
+.match-time{font-weight:700}
+.match-expression{flex:1}
+.match-move-controls{display:flex;flex-direction:column;gap:3px}
+.match-move{min-width:34px;min-height:23px;padding:1px 7px;border:1px solid var(--border,#d7dfeb);border-radius:7px;background:var(--surface,#f5f8fc);font-size:16px}
+.match-move:disabled{opacity:.3}
+.match-draggable.dragging{opacity:.45}
+.match-draggable.drag-over .match-option{outline:2px dashed var(--primary,#315b91)}
+.match-correct .match-option{border-color:#26845b;background:rgba(38,132,91,.09)}
+.match-incorrect .match-option{border-color:#bd5555;background:rgba(189,85,85,.08)}
+@media(max-width:520px){.matching-grid{gap:8px}.match-row{gap:3px}.match-option{padding:8px 5px;font-size:.88rem}.match-move{min-width:29px}}
