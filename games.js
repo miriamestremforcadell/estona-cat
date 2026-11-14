@@ -20,7 +20,7 @@
     return node;
   };
   const normalize = value => String(value || '').toLocaleLowerCase('ca')
-    .normalize('NFC').trim().replace(/[¿?¡!.,;:]/g,'').replace(/\\s+/g,' ');
+    .normalize('NFC').trim().replace(/[¿?¡!.,;:]/g,'').split(' ').filter(Boolean).join(' ');
   let session = null;
 
   function getItems() {
