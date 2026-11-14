@@ -7,11 +7,7 @@
     construeix: 'Construeix l’expressió', escolta: 'Escolta i interpreta',
     corregeix: 'Corregeix l’error', situacions: 'Situacions reals'
   };
-  const clockVariants = {
-    '08:15': ['les vuit i quart'],
-    '08:30': ['les vuit i mitja'],
-    '08:45': ['les nou menys quart']
-  };
+  const clockVariants = {}; // Les variants vàlides provenen del banc lingüístic revisat.
   const $ = (s, root=document) => root.querySelector(s);
   const el = (tag, cls, value) => {
     const node = document.createElement(tag);
@@ -31,7 +27,7 @@
         (lesson.examples || []).forEach(example => {
           if (example.status !== 'validat') return;
           if (!items.some(item => item.time === example.time)) items.push({
-            time: example.time, expression: example.expression, note: example.note || lesson.explanation
+            time: example.time, expression: example.expression, note: example.note || lesson.explanation, validAlternatives: example.validAlternatives || []
           });
         });
       });
@@ -42,7 +38,7 @@
     const value = normalize(answer);
     const expected = session?.mode === 'escriu' ? item.time : item.expression;
     if (value === normalize(expected)) return 'target-correct';
-    if ((clockVariants[item.time] || []).some(v => normalize(v) === value)) return 'valid-but-not-target';
+    if ([...(item.validAlternatives || []).map(v=>v.expression), ...(clockVariants[item.time] || [])].some(v => normalize(v) === value)) return 'valid-but-not-target';
     return strict ? 'incorrect' : 'needs-review';
   }
   function shuffled(list) {
@@ -62,6 +58,7 @@
   function optionList(item, items, parent, onAnswer, includeAlternative=true) {
     const distractors=shuffled(items.filter(x=>x.time!==item.time)).slice(0,3).map(x=>({label:x.expression,value:x.expression}));
     const opts=[...distractors,{label:item.expression,value:item.expression}];
+    if (includeAlternative) (item.validAlternatives || []).forEach(v=>opts.push({label:v.expression,value:v.expression}));
     if (includeAlternative && clockVariants[item.time]?.length) opts.push({label:clockVariants[item.time][0],value:clockVariants[item.time][0]});
     shuffled(opts).forEach(o=>addButton(parent,o.label,()=>onAnswer(o.value)));
   }
@@ -69,7 +66,7 @@
     const feedback=$('#answer-feedback');
     feedback.className='feedback '+result;
     if(result==='target-correct') feedback.textContent=session.mode==='escriu'?'Correcte! '+item.time+' correspon a «'+item.expression+'».':'Molt bé! «'+item.expression+'» és la forma que estem practicant.';
-    else if(result==='valid-but-not-target') feedback.textContent='Aquesta expressió també és catalana i vàlida, però correspon al sistema de rellotge. Aquí practiquem el sistema de campanar: «'+item.expression+'».';
+    else if(result==='valid-but-not-target') feedback.textContent='Aquesta expressió també és catalana i vàlida en el sistema de rellotge. Aquí practiquem el sistema de campanar: «'+item.expression+'».';
     else if(result==='needs-review') feedback.textContent='No podem classificar automàticament aquesta resposta. Pot ser una variant vàlida: revisa la forma de campanar que practiquem, «'+item.expression+'».';
     else feedback.textContent='Encara no. La forma que busquem és «'+item.expression+'». Fixa’t en l’hora següent que prenem com a referència.';
   }
