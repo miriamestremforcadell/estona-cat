@@ -154,3 +154,30 @@ body.reduce-motion *,body.reduce-motion *:before,body.reduce-motion *:after { an
 :root[data-theme="dark"] { color-scheme:dark; --bg:#172a36; --paper:#203744; --paper-blue:#294655; --ink:#edf2f1; --muted:#b0bec2; --blue:#a9c8d8; --blue-light:#648da2; --line:#38505b; --accent:#d3a77b; --nav-bg:rgba(27,45,56,.94); }
 :root[data-theme="dark"] .continue-card,:root[data-theme="dark"] .profile-summary { background:#294d63; }
 :root[data-theme="dark"] .round-arrow { background:#e5e0d4; color:#294d63; }
+
+
+/* ESTONA · Modalitats de pràctica */
+.game-instruction { color:var(--muted); font-size:13px; line-height:1.6; margin:0 0 18px; text-align:left; }
+.game-prompt { font-family:Georgia,serif; font-size:clamp(35px,10vw,52px); color:var(--blue); padding:15px 8px 22px; }
+.answer-options { display:grid; grid-template-columns:1fr; gap:9px; margin:12px 0 17px; }
+.answer-option,.match-option { width:100%; padding:13px 14px; border:1px solid var(--line); border-radius:12px; background:var(--bg); color:var(--ink); font:inherit; font-size:13px; text-align:center; }
+.answer-option:disabled,.match-option:disabled,.word-chip:disabled { opacity:.6; }
+.feedback { min-height:42px; padding:8px 2px; }
+.feedback.target-correct { color:#28724b; }
+.feedback.valid-but-not-target { color:var(--blue); }
+.feedback.incorrect { color:#a34f45; }
+.game-input { width:100%; border:1px solid var(--line); border-radius:12px; background:var(--bg); color:var(--ink); padding:15px; font:inherit; font-size:16px; margin:10px 0 12px; }
+.game-submit { margin:8px 0; }
+.word-bank { display:flex; flex-wrap:wrap; justify-content:center; gap:8px; margin:15px 0; }
+.word-chip { border:1px solid var(--line); background:var(--paper-blue); color:var(--blue); border-radius:999px; padding:10px 14px; font:inherit; font-size:14px; }
+.built-words { min-height:54px; padding:14px; border:1px dashed var(--blue-light); border-radius:12px; margin:12px 0; color:var(--blue); font-family:Georgia,serif; font-size:21px; }
+.listen-button { border:1px solid var(--blue); background:var(--paper-blue); color:var(--blue); padding:14px 18px; border-radius:14px; font:inherit; font-weight:700; }
+.matching-grid { display:grid; grid-template-columns:.8fr 1.2fr; gap:10px; text-align:center; }
+.matching-column { display:grid; align-content:start; gap:9px; }
+.matching-label { font-size:10px; color:var(--muted); letter-spacing:.12em; font-weight:700; }
+.matching-time { border:1px solid var(--blue-light); background:var(--paper-blue); border-radius:12px; padding:16px 6px; color:var(--blue); font-family:Georgia,serif; font-size:21px; }
+.match-option { font-size:12px; min-height:54px; }
+.correction-wrong { display:block; padding:14px; background:rgba(163,79,69,.09); border-radius:12px; color:#a34f45; font-family:Georgia,serif; font-size:20px; }
+.completion-score { font-family:Georgia,serif; color:var(--blue); font-size:54px; padding:15px; }
+.completion-heading { font-family:Georgia,serif; font-weight:500; font-size:25px; }
+@media(min-width:520px) { .answer-options { grid-template-columns:1fr 1fr; } }
