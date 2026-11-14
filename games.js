@@ -92,29 +92,68 @@
     $('#answer-feedback').textContent='Pista: pensa en l’hora que ve després. «'+item.expression.split(' de ').slice(-1)[0]+'» és la referència.';
   }
   function relationUI(item, items, stage) {
-    stage.appendChild(el('p','game-instruction','Relaciona cada hora amb la seva expressió. Selecciona primer una hora i després la forma corresponent.'));
+    stage.appendChild(el('p','game-instruction','Mou les files de la columna de la dreta amunt o avall fins que cada hora coincideixi amb la seva expressió. També pots arrossegar-les. Després, prem «Comprova les parelles».'));
     const sample=shuffled(items.filter(x=>x.time!==item.time)).slice(0,3);
     const pairs=shuffled([item,...sample]);
     const grid=el('div','matching-grid'), left=el('div','matching-column'), right=el('div','matching-column');
     left.appendChild(el('span','matching-label','HORA'));
     right.appendChild(el('span','matching-label','EXPRESSIÓ'));
-    let selectedTime=null, selectedExpression=null;
-    const timeButtons=[];
-    pairs.forEach(x=>timeButtons.push(addButton(left,x.time,()=>{
-      selectedTime=x.time; timeButtons.forEach(b=>b.classList.toggle('selected',b.textContent===x.time));
-      resolvePair();
-    },'match-option')));
-    shuffled(pairs).forEach(x=>addButton(right,x.expression,()=>{
-      selectedExpression=x; right.querySelectorAll('button').forEach(b=>b.classList.toggle('selected',b.textContent===x.expression));
-      resolvePair();
-    },'match-option'));
-    function resolvePair(){
-      if(!selectedTime || !selectedExpression)return;
-      const isCorrect=selectedTime===selectedExpression.time && selectedTime===item.time;
-      const wrongExpression=pairs.find(x=>x.time!==item.time).expression;
-      answer(isCorrect?item.expression:wrongExpression,true);
+    pairs.forEach(x=>{
+      const row=el('div','match-row match-fixed');
+      row.appendChild(el('span','match-option match-time',x.time));
+      left.appendChild(row);
+    });
+    let order=shuffled(pairs);
+    const renderRight=()=>{
+      right.querySelectorAll('.match-row').forEach(n=>n.remove());
+      order.forEach((x,index)=>{
+        const row=el('div','match-row match-draggable');
+        row.draggable=true;
+        row.dataset.index=String(index);
+        row.appendChild(el('span','match-option match-expression',x.expression));
+        const controls=el('span','match-move-controls');
+        const up=addButton(controls,'↑',()=>move(index,-1),'match-move');
+        const down=addButton(controls,'↓',()=>move(index,1),'match-move');
+        up.disabled=index===0;down.disabled=index===order.length-1;
+        row.appendChild(controls);
+        row.addEventListener('dragstart',e=>{e.dataTransfer.setData('text/plain',String(index));e.dataTransfer.effectAllowed='move';row.classList.add('dragging');});
+        row.addEventListener('dragend',()=>row.classList.remove('dragging'));
+        row.addEventListener('dragover',e=>{e.preventDefault();e.dataTransfer.dropEffect='move';row.classList.add('drag-over');});
+        row.addEventListener('dragleave',()=>row.classList.remove('drag-over'));
+        row.addEventListener('drop',e=>{
+          e.preventDefault();row.classList.remove('drag-over');
+          const from=Number(e.dataTransfer.getData('text/plain')),to=index;
+          if(Number.isInteger(from)&&from>=0&&from<order.length&&from!==to){const moved=order.splice(from,1)[0];order.splice(to,0,moved);renderRight();}
+        });
+        right.appendChild(row);
+      });
+    };
+    function move(index,delta){
+      const target=index+delta;if(target<0||target>=order.length)return;
+      [order[index],order[target]]=[order[target],order[index]];renderRight();
     }
+    renderRight();
     grid.append(left,right);stage.appendChild(grid);
+    addButton(stage,'Comprova les parelles',()=>{
+      if(session.answered)return;
+      const correct=order.filter((x,i)=>x.time===pairs[i].time).length;
+      session.answered=true;
+      if(correct===pairs.length){session.correct++;session.earned+=10;session.lastResult='target-correct';}
+      else {session.incorrect++;session.lastResult='incorrect';}
+      const feedback=$('#answer-feedback');
+      feedback.className='feedback '+(correct===pairs.length?'target-correct':'incorrect');
+      feedback.textContent=correct===pairs.length
+        ?'Perfecte! Les quatre parelles coincideixen.'
+        :'N’hi ha '+correct+' de '+pairs.length+' ben col·locades. Revisa les files marcades i torna-ho a provar a la propera ronda.';
+      order.forEach((x,i)=>{
+        const row=right.children[i+1];
+        if(row)row.classList.toggle('match-correct',x.time===pairs[i].time);
+        if(row)row.classList.toggle('match-incorrect',x.time!==pairs[i].time);
+      });
+      $('#next-question').disabled=false;
+      $('#next-question').textContent=session.index===session.questions.length-1?'Acaba la pràctica':'Següent pregunta →';
+      stage.querySelectorAll('button').forEach(btn=>btn.disabled=true);
+    },'primary-button game-submit');
   }
   function build() {
     const stage=$('#game-stage'); stage.innerHTML='';
